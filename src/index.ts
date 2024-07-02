@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express'
 
-const app = express()
+export const app = express()
 const port = process.env.PORT || 3000;
 
-const HTTP_STATUS = {
+export const HTTP_STATUS = {
   OK_200: 200,
   CREATED_201: 201,
   NO_CONTENT_204: 204,
@@ -28,7 +28,7 @@ const db = {
 };
 
 app.get('/', (req: Request, res: Response) => {
-  res.status(200).send('Hello Developer!')
+  res.status(HTTP_STATUS.OK_200).send('Hello Developer!')
 })
 
 app.get('/courses', (req, res) => {
@@ -89,6 +89,11 @@ app.delete('/courses/:id', (req, res) => {
     db.courses = db.courses.filter(course => course.id !== Number(req.params.id));
     res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
   }
+})
+
+app.delete('/__test__/data', (req, res) => {
+  db.courses = [];
+  res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
 })
 
 app.listen(port, () => {
